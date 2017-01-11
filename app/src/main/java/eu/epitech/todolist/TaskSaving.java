@@ -27,7 +27,21 @@ public class TaskSaving {
         TaskSaving.doneTasks = doneTasks;
     }
 
-    public static void addNewToDoTask(Task task) {
+    public static ArrayList<Task> getTasks() {
+        return tasks;
+    }
+
+    public static void setTasks(ArrayList<Task> tasks) {
+        TaskSaving.tasks = tasks;
+    }
+
+    public static void addNewTask(Task task) {
+        if (toDoTasks == null) {
+            toDoTasks = new ArrayList<Task>();
+        }
+        if (tasks == null) {
+            tasks = new ArrayList<Task>();
+        }
         toDoTasks.add(task);
         tasks.add(task);
     }
@@ -37,6 +51,9 @@ public class TaskSaving {
             if (task.equals(tmp)) {
                 // Remove in the toDoTasks list + add in the doneTasks list + update in sharedPreferences
                 toDoTasks.remove(task);
+                if (doneTasks == null) {
+                    doneTasks = new ArrayList<Task>();
+                }
                 doneTasks.add(task);
 
                 // Recreate a new list with all the tasks for later

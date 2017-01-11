@@ -38,7 +38,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/description_task"
             android:id="@+id/descriptionLabel"
-            android:layout_marginTop="66dp"
+            android:layout_marginTop="40dp"
             android:layout_below="@+id/editText2"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal" />
@@ -62,7 +62,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/editText"
             android:layout_alignStart="@+id/button"
-            android:layout_marginTop="71dp"
+            android:layout_marginTop="40dp"
             android:layout_gravity="center_horizontal" />
 
         <Button
@@ -75,6 +75,23 @@
             android:layout_alignEnd="@+id/textView"
             android:layout_gravity="center_horizontal" />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Due time"
+            android:id="@+id/dueTimeLabel"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal" />
+
+        <Button
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pick Time"
+            android:id="@+id/dueTime"
+            android:layout_gravity="center_horizontal"
+            android:onClick="showTimePicker" />
+
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
@@ -84,7 +101,8 @@
             android:layout_centerHorizontal="true"
             android:layout_below="@+id/datePickerCaller"
             android:layout_gravity="center_horizontal"
-            android:onClick="addNewTask" />
+            android:onClick="addNewTask"
+            android:layout_marginTop="10dp" />
 
     </LinearLayout>
 

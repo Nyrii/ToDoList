@@ -1,6 +1,8 @@
 package eu.epitech.todolist;
 
+import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
@@ -11,6 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -24,6 +28,8 @@ import eu.epitech.todolist.time.TimePickerFragment;
  * Created by noboud_n on 10/01/2017.
  */
 public class AddingTask extends AppCompatActivity {
+
+    private static final String TODOLIST = "TDL_List";
 
     private static final String TAG = "AddingTask";
     @Override
@@ -52,32 +58,36 @@ public class AddingTask extends AppCompatActivity {
     }
 
     public boolean addNewTask(View view) {
-        EditText titleEditText;
-        EditText descriptionEditText;
-        TextView dateTextView;
-        String description;
+        EditText    titleEditText;
+        EditText    descriptionEditText;
+        TextView    dateTextView;
+        TextView    timeTextView;
+        String      title;
+        String      description;
 
         titleEditText = (EditText)findViewById(R.id.title);
         descriptionEditText = (EditText)findViewById(R.id.description);
         dateTextView = (TextView)findViewById(R.id.dueDateLabel);
+        timeTextView = (TextView)findViewById(R.id.dueTimeLabel);
         if (titleEditText != null && !titleEditText.getText().toString().isEmpty()
             && dateTextView != null) {
+            title = titleEditText.getText().toString();
             if (descriptionEditText != null && !descriptionEditText.getText().toString().isEmpty()) {
                 description = descriptionEditText.getText().toString();
             } else {
                 description = "";
             }
 
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm");
             try {
-                Date date = df.parse(dateTextView.getText().toString());
-//                System.err.println(df.format(date)); // Only Year-Month-Day
-                // New task with title, description (optional) + date + time
+                Date date = df.parse(dateTextView.getText().toString() + " " + timeTextView.getText().toString());
+                Task task = new Task(title, description, date, Task.Status.TODO);
+                TaskSaving.addNewTask(task);
+                updateSharedPreferences();
             } catch (ParseException e) {
                 return fieldError();
             }
-            System.err.println(titleEditText.getText().toString());
-            System.err.println(descriptionEditText.getText().toString());
+            finish();
             return true;
         }
         return fieldError();
@@ -105,5 +115,22 @@ public class AddingTask extends AppCompatActivity {
                 });
         alertDialog.show();
         return false;
+    }
+
+    public void updateSharedPreferences() {
+        SharedPreferences sharedPreferences;
+        Gson gson = new Gson();
+
+        String jsonFinal = gson.toJson(TaskSaving.getTasks());
+        sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("Tasks", jsonFinal);
+        jsonFinal = gson.toJson(TaskSaving.getToDoTasks());
+        editor.putString("Todo", jsonFinal);
+        jsonFinal = gson.toJson(TaskSaving.getDoneTasks());
+        editor.putString("Done", jsonFinal);
+        editor.apply();
+        // Log
+        System.out.println(sharedPreferences.getAll());
     }
 }
