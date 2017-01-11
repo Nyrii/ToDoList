@@ -13,7 +13,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Title"
-            android:id="@+id/textView2"
+            android:id="@+id/titleLabel"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="45dp"
@@ -22,7 +22,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText2"
+            android:id="@+id/title"
             android:layout_below="@+id/textView2"
             android:layout_alignParentEnd="true"
             android:layout_alignStart="@+id/editText"
@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="@string/description_task"
-            android:id="@+id/textView"
+            android:id="@+id/descriptionLabel"
             android:layout_marginTop="66dp"
             android:layout_below="@+id/editText2"
             android:layout_centerHorizontal="true"
@@ -46,17 +46,17 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/editText"
+            android:id="@+id/description"
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
-            android:layout_below="@+id/textView"
+            android:layout_below="@+id/description"
             android:layout_centerHorizontal="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentStart="true"
             android:maxLines="3" />
 
         <TextView
-            android:id="@+id/chosenDate"
+            android:id="@+id/dueDateLabel"
             android:text="@string/init_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -66,7 +66,7 @@
             android:layout_gravity="center_horizontal" />
 
         <Button
-            android:id="@+id/datePickerCaller"
+            android:id="@+id/dueDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_date"

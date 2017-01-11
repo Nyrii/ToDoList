@@ -1,4 +1,4 @@
-package eu.epitech.todolist;
+package eu.epitech.todolist.time;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
@@ -8,6 +8,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 import java.util.Calendar;
+
+import eu.epitech.todolist.R;
 
 /**
  * Created by noboud_n on 10/01/2017.
@@ -28,9 +30,12 @@ public class DatePickerFragment extends DialogFragment
     }
 
     public void onDateSet(DatePicker view, int year, int month, int day) {
-        TextView textView = (TextView) getActivity().findViewById(R.id.chosenDate);
-        StringBuilder formattedDate = new StringBuilder().append(year).append("-").append(month + 1 < 10 ? "0" + (month + 1) : month + 1).append("-").append(day + 1 < 10 ? "0" + (day + 1) : day + 1);
+        TextView textView = (TextView) getActivity().findViewById(R.id.dueDateLabel);
+        StringBuilder formattedDate = new StringBuilder().append(year)
+                .append("-")
+                .append(month + 1 < 10 ? "0" + (month + 1) : month + 1)
+                .append("-")
+                .append(day + 1 < 10 ? "0" + (day + 1) : day + 1);
         textView.setText(formattedDate);
-
     }
 }

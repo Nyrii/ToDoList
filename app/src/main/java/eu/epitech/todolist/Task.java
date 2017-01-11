@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by noboud_n on 10/01/2017.
  */
 public class Task {
-    private enum    Status {TODO, DONE};
+    public enum    Status {TODO, DONE};
     private String  title;
     private String  desc;
     private Date    dueDate;
