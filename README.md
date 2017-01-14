@@ -1,2 +1,2 @@
 # ToDoList
-A "To do" application in android
+A "To do" android application
