@@ -10,7 +10,12 @@
     tools:context="eu.epitech.todolist.MainActivity">
 
     <TextView
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Hello World!" />
+        android:text="To do List"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_width="fill_parent" />
+    <ListView
+        android:id="@+id/ListViewTasks"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"/>
 </RelativeLayout>
