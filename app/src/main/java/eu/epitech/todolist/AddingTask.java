@@ -94,10 +94,11 @@ public class AddingTask extends AppCompatActivity {
 
             SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd hh:mm");
             try {
+                Date currentDate = new Date();
                 Date dueDate = dateFormatter.parse(_dateTextView.getText().toString() + " " + _timeTextView.getText().toString());
-                Date currentDate = dateFormatter.parse(dateFormatter.format(new Date()));
+
                 if (currentDate.after(dueDate)) {
-                    return errorOccured(WRONG_DATE);
+                        return errorOccured(WRONG_DATE);
                 }
                 scheduleTask(title, description, dueDate);
 
@@ -163,7 +164,9 @@ public class AddingTask extends AppCompatActivity {
     public void scheduleNotification(Date notificationDate, String title, String content, int notificationId, Class activityClass) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(notificationDate);
-        cal.set(Calendar.HOUR_OF_DAY, cal.HOUR_OF_DAY - 1);
+
+        // Notification 10 minutes before
+        cal.add(Calendar.MINUTE, -10);
         Intent intent = new Intent(this, activityClass);
         PendingIntent activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
 

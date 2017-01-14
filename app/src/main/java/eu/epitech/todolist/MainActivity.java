@@ -1,9 +1,12 @@
 package eu.epitech.todolist;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -16,8 +19,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TODOLIST = "TDL_List";
-    private ArrayList<Task> _toDoTasks = new ArrayList<>();
-    private ArrayList<Task> _doneTasks = new ArrayList<>();
+    private static final String TAG = "MainActivity";
+    private ArrayList<Task> _toDoTasks = null;
+    private ArrayList<Task> _doneTasks = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,18 +34,24 @@ public class MainActivity extends AppCompatActivity {
 
         Gson gson = new Gson();
         Task[] tasks = gson.fromJson(jsonToDoTasks, Task[].class);
-        if (tasks != null && tasks.length > 0) {
-            for (Task task : tasks) {
-                _toDoTasks.add(task);
+        if ((_toDoTasks = TaskSaving.getToDoTasks()) == null) {
+            if (tasks != null && tasks.length > 0) {
+                _toDoTasks = new ArrayList<>();
+                for (Task task : tasks) {
+                    _toDoTasks.add(task);
+                }
             }
         }
 
         String jsonDoneTasks = sharedPreferences.getString("Done", "");
-
         tasks = gson.fromJson(jsonDoneTasks, Task[].class);
-        if (tasks != null) {
-            for (Task task : tasks) {
-                _doneTasks.add(task);
+
+        if ((_doneTasks = TaskSaving.getToDoTasks()) == null) {
+            _doneTasks = new ArrayList<>();
+            if (tasks != null) {
+                for (Task task : tasks) {
+                    _doneTasks.add(task);
+                }
             }
         }
 
@@ -56,6 +66,25 @@ public class MainActivity extends AppCompatActivity {
                     Toast.makeText(getBaseContext(), "You have chosen: " + fullObject.getTitle(), Toast.LENGTH_LONG).show();
                 }
             });
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_task:
+                Intent intent = new Intent(this, AddingTask.class);
+                startActivity(intent);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
