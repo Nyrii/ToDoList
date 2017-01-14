@@ -35,7 +35,7 @@ public class DatePickerFragment extends DialogFragment
                 .append("-")
                 .append(month + 1 < 10 ? "0" + (month + 1) : month + 1)
                 .append("-")
-                .append(day + 1 < 10 ? "0" + (day + 1) : day + 1);
+                .append(day + 1 < 10 ? "0" + (day + 1) : day);
         textView.setText(formattedDate);
     }
 }

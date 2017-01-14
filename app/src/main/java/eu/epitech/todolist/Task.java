@@ -11,6 +11,7 @@ public class Task {
     private String  desc;
     private Date    dueDate;
     private Status  status;
+    private int     notificationId;
 
     public String getTitle() {
         return title;
@@ -44,11 +45,12 @@ public class Task {
         this.status = status;
     }
 
-    public Task(String title, String desc, Date dueDate, Status status) {
+    public Task(String title, String desc, Date dueDate, int notificationId, Status status) {
         this.title = title;
         this.desc = desc;
         this.dueDate = dueDate;
         this.status = status;
+        this.notificationId = notificationId;
     }
 
 }

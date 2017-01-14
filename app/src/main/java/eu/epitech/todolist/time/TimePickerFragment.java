@@ -34,7 +34,7 @@ public class TimePickerFragment extends DialogFragment
         TextView textView = (TextView) getActivity().findViewById(R.id.dueTimeLabel);
         StringBuilder formattedTime = new StringBuilder().append(hourOfDay)
                 .append(":")
-                .append(minute);
+                .append(minute < 10 ? "0" + minute : minute);
         textView.setText(formattedTime);
     }
 }
