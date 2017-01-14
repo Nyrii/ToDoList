@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,6 +55,11 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
+        Collections.sort(_toDoTasks);
+        Collections.reverse(_toDoTasks);
+        Collections.sort(_doneTasks);
+        Collections.reverse(_doneTasks);
 
         if (!_toDoTasks.isEmpty()) {
             final ListView lv = (ListView) findViewById(R.id.ListViewTasks);

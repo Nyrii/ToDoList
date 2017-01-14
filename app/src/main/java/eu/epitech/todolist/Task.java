@@ -5,8 +5,8 @@ import java.util.Date;
 /**
  * Created by noboud_n on 10/01/2017.
  */
-public class Task {
-    public enum    Status {TODO, DONE};
+public class Task implements Comparable<Task> {
+    public enum    Status {TODO, DONE}
     private String  title;
     private String  desc;
     private Date    dueDate;
@@ -53,4 +53,8 @@ public class Task {
         this.notificationId = notificationId;
     }
 
+    @Override
+    public int compareTo(Task o) {
+        return getDueDate().compareTo(o.getDueDate());
+    }
 }
