@@ -14,6 +14,8 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -52,6 +54,8 @@ public class AddingTask extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.adding_process);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.tool_bar);
+        setSupportActionBar(toolbar);
     }
 
     @Override
@@ -160,7 +164,8 @@ public class AddingTask extends AppCompatActivity {
         editor.putString("Categories", jsonFinal);
         editor.apply();
         // Log
-        System.out.println(sharedPreferences.getAll());
+        Log.d(TAG, sharedPreferences.getAll().toString());
+//        System.out.println(sharedPreferences.getAll());
     }
 
     public void scheduleNotification(Date notificationDate, String title, String content, int notificationId, Class activityClass) {
@@ -193,4 +198,5 @@ public class AddingTask extends AppCompatActivity {
         AlarmManager alarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
         alarmManager.set(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(), pendingIntent);
     }
+
 }

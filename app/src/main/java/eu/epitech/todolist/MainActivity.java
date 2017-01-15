@@ -25,39 +25,63 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<Task> _tasks = null;
     private ArrayList<TabLayout.Tab> tabs = new ArrayList<>();
     private ArrayList<String> categories = null;
-    private Toolbar toolbar;
-    private TabLayout tabLayout;
     private ViewPagerAdapter tmpVPA = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        retrieveTasks();
+        createMenu();
+    }
 
-        SharedPreferences sharedPreferences;
-        sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
-        String jsonToDoTasks = sharedPreferences.getString("Tasks", "");
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
 
-        Gson gson = new Gson();
-        Task[] tasks = gson.fromJson(jsonToDoTasks, Task[].class);
-        if ((_tasks = TaskSaving.getTasks()) == null) {
-            if (tasks != null && tasks.length > 0) {
-                _tasks = new ArrayList<>();
-                for (Task task : tasks) {
-                    _tasks.add(task);
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_add_task:
+                Intent intent = new Intent(this, AddingTask.class);
+                startActivityForResult(intent, 1);
+                return true;
+
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    // When an intent created from MainActivity is done
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (tmpVPA != null) {
+                    // Update the fragment
+                    tmpVPA.notifyDataSetChanged();
                 }
             }
-            TaskSaving.setTasks(_tasks); // TMP
+
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                // No result
+//            }
         }
+    }
 
-        if (_tasks != null && _tasks.isEmpty()) {
-            Collections.sort(_tasks);
-            Collections.reverse(_tasks);
-        }
+    public void saveViewPagerAdapter(ViewPagerAdapter viewPagerAdapter) {
+        tmpVPA = viewPagerAdapter;
+    }
 
-
+    public void createMenu() {
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        Toolbar toolbar;
+        TabLayout tabLayout;
 
         // As viewPagerAdapter can only be initialized here, we save it and attribute it to tmpVPA so it can be used later.
         saveViewPagerAdapter(viewPagerAdapter);
@@ -101,69 +125,51 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
-                @Override
-                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
 
-                }
+            }
 
-                @Override
-                public void onPageSelected(int position) {
-                    // Notify which category of tasks will be called
-                    categories = TaskSaving.getCategories();
-                    if (categories != null && categories.size() > position) {
-                        String category = categories.get(position);
-                        TaskSaving.setCurrentCategory(category);
-                        viewPagerAdapter.notifyDataSetChanged(); // Calls override function ViewPagerAdapter.getItemPosition. As getItemPosition will return none, the fragment will be regenerated and will update its data.
-                    }
-                }
-
-                @Override
-                public void onPageScrollStateChanged(int state) {
-
-                }
-        });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main_menu, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_add_task:
-                Intent intent = new Intent(this, AddingTask.class);
-                startActivityForResult(intent, 1);
-                return true;
-
-
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    // When an intent created from MainActivity is done
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (requestCode == 1) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (tmpVPA != null) {
-                    // Update the fragment
-                    tmpVPA.notifyDataSetChanged();
+            @Override
+            public void onPageSelected(int position) {
+                // Notify which category of tasks will be called
+                categories = TaskSaving.getCategories();
+                if (categories != null && categories.size() > position) {
+                    String category = categories.get(position);
+                    TaskSaving.setCurrentCategory(category);
+                    viewPagerAdapter.notifyDataSetChanged(); // Calls override function ViewPagerAdapter.getItemPosition. As getItemPosition will return none, the fragment will be regenerated and will update its data.
                 }
             }
 
-//            if (resultCode == Activity.RESULT_CANCELED) {
-//                // No result
-//            }
-        }
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
     }
 
-    public void saveViewPagerAdapter(ViewPagerAdapter viewPagerAdapter) {
-        tmpVPA = viewPagerAdapter;
+    public void retrieveTasks() {
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
+        String jsonToDoTasks = sharedPreferences.getString("Tasks", "");
+
+        Gson gson = new Gson();
+        Task[] tasks = gson.fromJson(jsonToDoTasks, Task[].class);
+        if ((_tasks = TaskSaving.getTasks()) == null) {
+            if (tasks != null && tasks.length > 0) {
+                _tasks = new ArrayList<>();
+                for (Task task : tasks) {
+                    _tasks.add(task);
+                }
+            }
+            TaskSaving.setTasks(_tasks); // TMP
+        }
+
+        if (_tasks != null && _tasks.isEmpty()) {
+            Collections.sort(_tasks);
+            Collections.reverse(_tasks);
+        }
     }
 
 }

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ToDoList</string>
+    <string name="app_name">Task manager</string>
     <string name="description_task">Description</string>
     <string name="init_text">Due date</string>
     <string name="pick_date">Pick date</string>

@@ -6,9 +6,17 @@
     tools:context=".AddingTask"
     android:screenOrientation="portrait">
 
+
+    <include
+        android:id="@+id/tool_bar"
+        layout="@layout/toolbar"/>
+
+
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_below="@+id/tool_bar"
+        android:layout_alignParentStart="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,54 +35,6 @@
             android:layout_marginRight="10dp"
             android:maxLines="3"
             app:met_minCharacters="5" />
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-            <!--android:text="Title"-->
-            <!--android:id="@+id/titleLabel"-->
-            <!--android:layout_alignParentTop="true"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_marginTop="45dp"-->
-            <!--android:layout_gravity="center_horizontal" />-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/title"-->
-            <!--android:layout_below="@+id/textView2"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignStart="@+id/editText"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_gravity="center_horizontal"-->
-            <!--android:maxLines="3" />-->
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceMedium"-->
-            <!--android:text="@string/description_task"-->
-            <!--android:id="@+id/descriptionLabel"-->
-            <!--android:layout_marginTop="40dp"-->
-            <!--android:layout_below="@+id/editText2"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_gravity="center_horizontal" />-->
-
-        <!--<EditText-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/description"-->
-            <!--android:layout_marginLeft="10dp"-->
-            <!--android:layout_marginRight="10dp"-->
-            <!--android:layout_below="@+id/description"-->
-            <!--android:layout_centerHorizontal="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:maxLines="3" />-->
-
 
         <com.rengwuxian.materialedittext.MaterialEditText
             android:layout_width="match_parent"
