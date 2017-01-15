@@ -1,5 +1,6 @@
 package eu.epitech.todolist;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
@@ -105,6 +106,9 @@ public class AddingTask extends AppCompatActivity {
             } catch (ParseException e) {
                 return errorOccured(PARSE_DATE);
             }
+
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent); // will send result to the caller
             finish();
             return true;
         }

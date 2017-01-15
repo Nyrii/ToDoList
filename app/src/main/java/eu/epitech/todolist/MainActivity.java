@@ -1,5 +1,6 @@
 package eu.epitech.todolist;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -22,10 +23,11 @@ public class MainActivity extends AppCompatActivity {
     private static final String TODOLIST = "TDL_List";
     private static final String TAG = "MainActivity";
     private ArrayList<Task> _tasks = null;
-    ArrayList<TabLayout.Tab> tabs = new ArrayList<>();
-    ArrayList<String> categories = null;
+    private ArrayList<TabLayout.Tab> tabs = new ArrayList<>();
+    private ArrayList<String> categories = null;
     private Toolbar toolbar;
     private TabLayout tabLayout;
+    private ViewPagerAdapter tmpVPA = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +55,16 @@ public class MainActivity extends AppCompatActivity {
             Collections.reverse(_tasks);
         }
 
+
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+
+        // As viewPagerAdapter can only be initialized here, we save it and attribute it to tmpVPA so it can be used later.
+        saveViewPagerAdapter(viewPagerAdapter);
+
         categories = TaskSaving.getCategories();
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
-        final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(viewPagerAdapter);
         setSupportActionBar(toolbar);
 
@@ -128,7 +135,7 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.action_add_task:
                 Intent intent = new Intent(this, AddingTask.class);
-                startActivity(intent);
+                startActivityForResult(intent, 1);
                 return true;
 
 
@@ -136,4 +143,27 @@ public class MainActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    // When an intent created from MainActivity is done
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == 1) {
+            if (resultCode == Activity.RESULT_OK) {
+                if (tmpVPA != null) {
+                    // Update the fragment
+                    tmpVPA.notifyDataSetChanged();
+                }
+            }
+
+//            if (resultCode == Activity.RESULT_CANCELED) {
+//                // No result
+//            }
+        }
+    }
+
+    public void saveViewPagerAdapter(ViewPagerAdapter viewPagerAdapter) {
+        tmpVPA = viewPagerAdapter;
+    }
+
 }
