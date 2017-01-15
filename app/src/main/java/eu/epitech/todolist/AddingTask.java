@@ -41,7 +41,7 @@ public class AddingTask extends AppCompatActivity {
     private static final String TODOLIST = "TDL_List";
     private static final String FIELD_ERROR = "Please, fill at least the title field and inquire the due date and time.";
     private static final String PARSE_DATE = "An error occured when managing the date, please try again later.";
-    private static final String WRONG_DATE = "Please, pick a date posterior than the current one.";
+    private static final String WRONG_DATE = "Please, pick a date and set a time posterior than the current one.";
     private static final String NOTIF_MESSAGE = "An event you planned to do has almost reached its deadline !";
 
     private EditText    _titleEditText;
@@ -163,9 +163,7 @@ public class AddingTask extends AppCompatActivity {
         jsonFinal = gson.toJson(TaskSaving.getCategories());
         editor.putString("Categories", jsonFinal);
         editor.apply();
-        // Log
         Log.d(TAG, sharedPreferences.getAll().toString());
-//        System.out.println(sharedPreferences.getAll());
     }
 
     public void scheduleNotification(Date notificationDate, String title, String content, int notificationId, Class activityClass) {
