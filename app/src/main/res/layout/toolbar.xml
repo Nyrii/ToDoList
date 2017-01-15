@@ -4,4 +4,5 @@
     android:minHeight="?attr/actionBarSize"
     android:background="?attr/colorPrimary"
     android:id="@+id/toolbar"
-    xmlns:android="http://schemas.android.com/apk/res/android" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    />

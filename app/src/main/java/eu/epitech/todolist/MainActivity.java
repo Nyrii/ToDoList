@@ -11,10 +11,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -48,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
                     _toDoTasks.add(task);
                 }
             }
+            TaskSaving.setTasks(_toDoTasks); // TMP
         }
 
         String jsonDoneTasks = sharedPreferences.getString("Done", "");
@@ -71,28 +68,28 @@ public class MainActivity extends AppCompatActivity {
             Collections.reverse(_doneTasks);
         }
 
-        if (_toDoTasks != null && !_toDoTasks.isEmpty()) {
-            final ListView lv = (ListView) findViewById(R.id.ListViewTasks);
-            lv.setAdapter(new CustomBaseAdapter(this, _toDoTasks));
-            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                @Override
-                public void onItemClick(AdapterView<?> a, View v, int position, long id) {
-                    Object o = lv.getItemAtPosition(position);
-                    Task fullObject = (Task) o;
-                    Toast.makeText(getBaseContext(), "You have chosen: " + fullObject.getTitle(), Toast.LENGTH_LONG).show();
-                }
-            });
-        }
+//        if (_toDoTasks != null && !_toDoTasks.isEmpty()) {
+//            final ListView lv = (ListView) findViewById(R.id.ListViewTasks);
+//            lv.setAdapter(new CustomBaseAdapter(this, _toDoTasks));
+//            lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//                @Override
+//                public void onItemClick(AdapterView<?> a, View v, int position, long id) {
+//                    Object o = lv.getItemAtPosition(position);
+//                    Task fullObject = (Task) o;
+//                    Toast.makeText(getBaseContext(), "You have chosen: " + fullObject.getTitle(), Toast.LENGTH_LONG).show();
+//                }
+//            });
+//        }
 
 
         /*
-        Assigning view variables to thier respective view in xml
+        Assigning view variables to their respective view in xml
         by findViewByID method
          */
 
         toolbar = (Toolbar) findViewById(R.id.tool_bar);
         tabLayout = (TabLayout) findViewById(R.id.tabs);
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
+        final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
 
         /*
         Creating Adapter and setting that adapter to the viewPager
@@ -140,6 +137,23 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setTabTextColors(ContextCompat.getColorStateList(this, R.color.tab_selector));
         tabLayout.setSelectedTabIndicatorColor(ContextCompat.getColor(this, R.color.indicator));
 
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition()); // Notify viewPager.onPageSelected
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+        });
+
         /*
         Adding a onPageChangeListener to the viewPager
         1st we add the PageChangeListener and pass a TabLayoutPageChangeListener so that Tabs Selection
@@ -148,7 +162,35 @@ public class MainActivity extends AppCompatActivity {
 
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
 
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    // Notify which kind of tasks will be called (save it in TaskSaving)
+
+//                    switch (position){
+//                        case 0:
+//                            break;
+//                        case 1:
+//                            break;
+//                        case 2:
+//                            home.setIcon(R.drawable.ic_cancel);
+//                            inbox.setIcon(R.drawable.ic_cancel);
+//                            star.setIcon(R.drawable.ic_cancel);
+//                            break;
+//                    }
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+        });
 
 
 //        initInstancesDrawer();
@@ -184,6 +226,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(this, AddingTask.class);
                 startActivity(intent);
                 return true;
+
 
             default:
                 return super.onOptionsItemSelected(item);
