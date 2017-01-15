@@ -6,11 +6,10 @@ import java.util.Date;
  * Created by noboud_n on 10/01/2017.
  */
 public class Task implements Comparable<Task> {
-    public enum    Status {TODO, DONE}
     private String  title;
     private String  desc;
     private Date    dueDate;
-    private Status  status;
+    private String  category;
     private int     notificationId;
 
     public String getTitle() {
@@ -37,19 +36,19 @@ public class Task implements Comparable<Task> {
         this.dueDate = dueDate;
     }
 
-    public Status getStatus() {
-        return status;
+    public String getCategory() {
+        return category;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public Task(String title, String desc, Date dueDate, int notificationId, Status status) {
+    public Task(String title, String desc, Date dueDate, int notificationId, String category) {
         this.title = title;
         this.desc = desc;
         this.dueDate = dueDate;
-        this.status = status;
+        this.category = category;
         this.notificationId = notificationId;
     }
 

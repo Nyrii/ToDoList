@@ -20,9 +20,9 @@ public class FragmentPage extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.list_view, container, false);
 
-        if (TaskSaving.getTasks() != null) {
+        if (TaskSaving.getTasksByCategory() != null) {
             final ListView lv = (ListView) view;
-            lv.setAdapter(new CustomBaseAdapter(this.getContext(), TaskSaving.getTasks()));
+            lv.setAdapter(new CustomBaseAdapter(this.getContext(), TaskSaving.getTasksByCategory()));
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position, long id) {
@@ -32,9 +32,6 @@ public class FragmentPage extends Fragment {
                 }
             });
         }
-
-        Bundle arguments = getArguments();
-        int position = arguments.getInt("position");
 
         return view;
     }

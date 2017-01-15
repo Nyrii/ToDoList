@@ -115,7 +115,7 @@ public class AddingTask extends AppCompatActivity {
         int notificationId = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
         scheduleNotification(dueDate, "Reminder for : \"title\"", NOTIF_MESSAGE, notificationId, MainActivity.class);
 
-        Task task = new Task(title, description, dueDate, notificationId, Task.Status.TODO);
+        Task task = new Task(title, description, dueDate, notificationId, "TO DO");
         TaskSaving.addNewTask(task);
         updateSharedPreferences();
     }
@@ -152,10 +152,8 @@ public class AddingTask extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("Tasks", jsonFinal);
-        jsonFinal = gson.toJson(TaskSaving.getToDoTasks());
-        editor.putString("Todo", jsonFinal);
-        jsonFinal = gson.toJson(TaskSaving.getDoneTasks());
-        editor.putString("Done", jsonFinal);
+        jsonFinal = gson.toJson(TaskSaving.getCategories());
+        editor.putString("Categories", jsonFinal);
         editor.apply();
         // Log
         System.out.println(sharedPreferences.getAll());

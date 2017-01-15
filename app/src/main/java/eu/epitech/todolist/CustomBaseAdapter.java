@@ -14,7 +14,7 @@ import java.util.ArrayList;
  * Created by noboud_n on 11/01/2017.
  */
 public class CustomBaseAdapter extends BaseAdapter {
-    private static ArrayList<Task> searchArrayList = TaskSaving.getToDoTasks();
+    private static ArrayList<Task> searchArrayList = TaskSaving.getTasksByCategory();
 
     private LayoutInflater mInflater;
 

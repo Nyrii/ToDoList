@@ -1,79 +1,102 @@
 package eu.epitech.todolist;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by noboud_n on 11/01/2017
  */
 public class TaskSaving {
-    private static ArrayList<Task> toDoTasks = null;
-    private static ArrayList<Task> doneTasks = null;
+
+
     private static ArrayList<Task> tasks = null;
 
+    private static ArrayList<String> categories = null;
 
-    public static ArrayList<Task> getToDoTasks() {
-        return toDoTasks;
+    private static String currentCategory = null;
+
+    public static String getCurrentCategory() {
+        return currentCategory;
     }
 
-    public static void setToDoTasks(ArrayList<Task> toDoTasks) {
-        TaskSaving.toDoTasks = toDoTasks;
-    }
-
-    public static ArrayList<Task> getDoneTasks() {
-        return doneTasks;
-    }
-
-    public static void setDoneTasks(ArrayList<Task> doneTasks) {
-        TaskSaving.doneTasks = doneTasks;
+    public static void setCurrentCategory(String category) {
+        TaskSaving.currentCategory = category;
     }
 
     public static ArrayList<Task> getTasks() {
+        if (tasks != null && tasks.isEmpty()) {
+            Collections.sort(tasks);
+            Collections.reverse(tasks);
+        }
         return tasks;
+    }
+
+    public static ArrayList<Task> getTasksByCategory() {
+        ArrayList<Task> tasksByCategory = null;
+
+        if (currentCategory != null && tasks != null) {
+            for (Task tmp : tasks) {
+                if (tmp.getCategory().toLowerCase().equals(currentCategory.toLowerCase())) {
+                    if (tasksByCategory == null) {
+                        tasksByCategory = new ArrayList<>();
+                    }
+                    tasksByCategory.add(tmp);
+                }
+            }
+        }
+        if (tasksByCategory != null && tasksByCategory.isEmpty()) {
+            Collections.sort(tasksByCategory);
+            Collections.reverse(tasksByCategory);
+        }
+        return tasksByCategory;
+    }
+
+    public static ArrayList<String> getCategories() {
+        if (categories == null) {
+            categories = new ArrayList<>();
+            categories.add("TO DO");
+            categories.add("DONE");
+        }
+        return categories;
     }
 
     public static void setTasks(ArrayList<Task> tasks) {
         TaskSaving.tasks = tasks;
     }
 
-    public static void addNewTask(Task task) {
-        if (toDoTasks == null) {
-            toDoTasks = new ArrayList<Task>();
+    public static boolean addNewCategory(String category) {
+        for (String tmp : categories) {
+            if (tmp.toLowerCase().equals(category.toLowerCase())) {
+                return false;
+            }
         }
+        categories.add(category);
+        return true;
+    }
+
+    public static void addNewTask(Task task) {
         if (tasks == null) {
             tasks = new ArrayList<Task>();
         }
-        toDoTasks.add(task);
         tasks.add(task);
     }
 
-    public static void toDoFromDone(Task task) {
-        for (Task tmp : toDoTasks) {
-            if (task.equals(tmp)) {
-                // Remove in the toDoTasks list + add in the doneTasks list + update in sharedPreferences
-                toDoTasks.remove(task);
-                if (doneTasks == null) {
-                    doneTasks = new ArrayList<Task>();
-                }
-                doneTasks.add(task);
-
-                // Recreate a new list with all the tasks for later
-                tasks = new ArrayList<Task>();
-                if (toDoTasks != null && !toDoTasks.isEmpty()) {
-                    tasks.addAll(toDoTasks);
-                }
-                if (doneTasks != null && !doneTasks.isEmpty()) {
-                    tasks.addAll(doneTasks);
-                }
-                // update in sharedPreferences autre part, faire une string avec tous les array et envoyer ca dans les sharedpreferences depuis une activite
+    public static void changeCategory(Task task, String category) {
+        for (Task tmp : tasks) {
+            if (tmp.equals(task)) {
+                tmp.setCategory(category);
+                break;
             }
         }
+        // update in sharedPreferences autre part, faire une string avec tous les array et envoyer ca dans les sharedpreferences depuis une activite
     }
 
     public static void removeTask(Task task) {
-        if (task.getStatus() == Task.Status.TODO) {
-            toDoTasks.remove(task);
-        } else if (task.getStatus() == Task.Status.DONE) {
-            doneTasks.remove(task);
+        if (tasks != null) {
+            tasks.remove(task);
+            if (tasks.isEmpty()) {
+                tasks = null;
+            }
         }
     }
 
