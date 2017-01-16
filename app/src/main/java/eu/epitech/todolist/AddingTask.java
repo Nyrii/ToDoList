@@ -38,7 +38,7 @@ import eu.epitech.todolist.time.TimePickerFragment;
  */
 public class AddingTask extends AppCompatActivity {
 
-    private static final String TODOLIST = "TDL_List";
+    private static final String TODOLIST = "TaskManager_Noboud-Inpeng";
     private static final String FIELD_ERROR = "Please, fill at least the title field and inquire the due date and time.";
     private static final String PARSE_DATE = "An error occured when managing the date, please try again later.";
     private static final String WRONG_DATE = "Please, pick a date and set a time posterior than the current one.";
@@ -50,6 +50,7 @@ public class AddingTask extends AppCompatActivity {
     private TextView    _timeTextView;
 
     private static final String TAG = "AddingTask";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

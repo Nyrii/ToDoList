@@ -3,4 +3,6 @@
     <string name="description_task">Description</string>
     <string name="init_text">Due date</string>
     <string name="pick_date">Pick date</string>
+    <string name="add_task">Add a task</string>
+    <string name="add_category">Add a category</string>
 </resources>

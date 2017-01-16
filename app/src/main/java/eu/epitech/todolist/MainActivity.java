@@ -2,16 +2,22 @@ package eu.epitech.todolist;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.text.InputType;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 
@@ -20,18 +26,20 @@ import java.util.Collections;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TODOLIST = "TDL_List";
+    private static final String TODOLIST = "TaskManager_Noboud-Inpeng";
     private static final String TAG = "MainActivity";
     private ArrayList<Task> _tasks = null;
     private ArrayList<TabLayout.Tab> tabs = new ArrayList<>();
     private ArrayList<String> categories = null;
-    private ViewPagerAdapter tmpVPA = null;
+    private static ViewPagerAdapter tmpVPA = null;
+    TabLayout tabLayout = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         retrieveTasks();
+        retrieveCategories();
         createMenu();
     }
 
@@ -45,10 +53,13 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_add_task:
-                Intent intent = new Intent(this, AddingTask.class);
+                Intent intent = new Intent(getBaseContext(), AddingTask.class);
                 startActivityForResult(intent, 1);
                 return true;
 
+            case R.id.action_add_category:
+                generateCategoryAlarm();
+                return true;
 
             default:
                 return super.onOptionsItemSelected(item);
@@ -78,11 +89,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void createMenu() {
+        Log.d(TAG, "Create menu");
         final ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         final ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         Toolbar toolbar;
-        TabLayout tabLayout;
 
+        if (tabLayout != null) {
+            tabLayout.removeAllTabs();
+        }
         // As viewPagerAdapter can only be initialized here, we save it and attribute it to tmpVPA so it can be used later.
         saveViewPagerAdapter(viewPagerAdapter);
 
@@ -150,6 +164,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void retrieveTasks() {
+        Log.d(TAG, "Retrieve tasks in shared preferences");
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
         String jsonToDoTasks = sharedPreferences.getString("Tasks", "");
@@ -163,7 +178,7 @@ public class MainActivity extends AppCompatActivity {
                     _tasks.add(task);
                 }
             }
-            TaskSaving.setTasks(_tasks); // TMP
+            TaskSaving.setTasks(_tasks);
         }
 
         if (_tasks != null && _tasks.isEmpty()) {
@@ -172,4 +187,71 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void retrieveCategories() {
+        Log.d(TAG, "Retrieve tasks in shared preferences");
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
+        String jsonCategories = sharedPreferences.getString("Categories", "");
+
+        Gson gson = new Gson();
+        String[] prefCategories = gson.fromJson(jsonCategories, String[].class);
+        if (prefCategories == null) {
+            categories = TaskSaving.getCategories();
+        } else if (prefCategories != null && prefCategories.length > 0) {
+                categories = new ArrayList<>();
+                for (String category : prefCategories) {
+                    categories.add(category);
+                }
+            TaskSaving.setCategories(categories);
+        }
+    }
+
+    public void generateCategoryAlarm() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add a category");
+
+        final EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String category = input.getText().toString();
+                if (TaskSaving.doesCategoryExist(category)) {
+                    Toast.makeText(getApplicationContext(), "The category already exists.", Toast.LENGTH_SHORT).show();
+                } else {
+                    TaskSaving.addNewCategory(category);
+                    updateSharedPreferences();
+                    tmpVPA.notifyDataSetChanged();
+                    createMenu();
+                }
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
+    public void updateSharedPreferences() {
+        SharedPreferences sharedPreferences;
+        Gson gson = new Gson();
+        sharedPreferences = getSharedPreferences(TODOLIST, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        String jsonFinal = gson.toJson(TaskSaving.getTasks());
+        editor.putString("Tasks", jsonFinal);
+        jsonFinal = gson.toJson(TaskSaving.getCategories());
+        editor.putString("Categories", jsonFinal);
+        editor.apply();
+        Log.d(TAG, sharedPreferences.getAll().toString());
+    }
+
+    public static ViewPagerAdapter getViewPagerAdapter() {
+        return tmpVPA;
+    }
 }

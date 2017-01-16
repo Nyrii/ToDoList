@@ -60,6 +60,19 @@ public class TaskSaving {
         return categories;
     }
 
+    public static void setCategories(ArrayList<String> categories) {
+        TaskSaving.categories = categories;
+    }
+
+    public static boolean doesCategoryExist(String category) {
+        for (String tmp : getCategories()) {
+            if (tmp.toLowerCase().equals(category.toLowerCase())) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public static void setTasks(ArrayList<Task> tasks) {
         TaskSaving.tasks = tasks;
     }
@@ -88,7 +101,6 @@ public class TaskSaving {
                 break;
             }
         }
-        // update in sharedPreferences autre part, faire une string avec tous les array et envoyer ca dans les sharedpreferences depuis une activite
     }
 
     public static void removeTask(Task task) {
