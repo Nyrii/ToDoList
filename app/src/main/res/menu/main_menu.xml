@@ -10,6 +10,10 @@
             android:id="@+id/action_add_category"
             android:icon="@drawable/ic_add_task_light"
             android:title="@string/add_category"/>
+        <item
+            android:id="@+id/action_remove_category"
+            android:icon="@drawable/ic_add_task_light"
+            android:title="@string/remove_category"/>
     </group>
 
     <it.neokree.materialtabs.MaterialTabHost

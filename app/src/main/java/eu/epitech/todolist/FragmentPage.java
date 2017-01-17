@@ -16,6 +16,7 @@ import android.widget.ListView;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  * Created by noboud_n on 15/01/2017.
@@ -105,7 +106,18 @@ public class FragmentPage extends Fragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Select a category");
 
-        ArrayList<String> categories = TaskSaving.getCategories();
+        ArrayList<String> categories = new ArrayList<>(TaskSaving.getCategories());
+
+
+        Iterator<String> tmp = categories.iterator();
+        while (tmp.hasNext()) {
+            String s = tmp.next();
+            if (s.equals(task.getCategory())) {
+                tmp.remove();
+                break;
+            }
+        }
+
         final String[] arrayCategories = categories.toArray(new String[categories.size()]);
 
         builder.setItems(arrayCategories, new DialogInterface.OnClickListener() {

@@ -23,6 +23,7 @@ import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Iterator;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -59,6 +60,10 @@ public class MainActivity extends AppCompatActivity {
 
             case R.id.action_add_category:
                 generateCategoryAlarm();
+                return true;
+
+            case R.id.action_remove_category:
+                removeCategory();
                 return true;
 
             default:
@@ -254,4 +259,41 @@ public class MainActivity extends AppCompatActivity {
     public static ViewPagerAdapter getViewPagerAdapter() {
         return tmpVPA;
     }
+
+    private void removeCategory() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Select a category");
+
+        ArrayList<String> categories = new ArrayList<>(TaskSaving.getCategories());
+
+        Iterator<String> tmp = categories.iterator();
+        while (tmp.hasNext()) {
+            String s = tmp.next();
+            if (s.equals("TO DO") || s.equals("DONE")) {
+                tmp.remove();
+            }
+        }
+
+        final String[] arrayCategories = categories.toArray(new String[categories.size()]);
+
+        builder.setItems(arrayCategories, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                TaskSaving.removeCategory(arrayCategories[which]);
+                updateSharedPreferences();
+                tmpVPA.notifyDataSetChanged();
+                createMenu();
+                dialog.dismiss();
+            }
+        });
+        builder.setNegativeButton("cancel",
+                new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        builder.show();
+    }
+
 }

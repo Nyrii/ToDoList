@@ -5,4 +5,5 @@
     <string name="pick_date">Pick date</string>
     <string name="add_task">Add a task</string>
     <string name="add_category">Add a category</string>
+    <string name="remove_category">Remove a category</string>
 </resources>

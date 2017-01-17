@@ -112,4 +112,13 @@ public class TaskSaving {
         }
     }
 
+    public static void removeCategory(String category) {
+        for (String tmp : getCategories()) {
+            if (tmp.toLowerCase().equals(category.toLowerCase())) {
+                categories.remove(category);
+                return;
+            }
+        }
+    }
+
 }
