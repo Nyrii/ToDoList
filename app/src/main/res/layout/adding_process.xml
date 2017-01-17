@@ -64,10 +64,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/pick_date"
+            android:textColor="@color/pickPeriod"
             android:onClick="showCalendar"
+            android:padding="14dp"
             android:layout_below="@+id/chosenDate"
             android:layout_alignEnd="@+id/textView"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"
+            android:drawableLeft="@drawable/ic_pick_date"
+            android:theme="@style/pickPeriod"/>
 
         <TextView
             android:layout_width="wrap_content"
@@ -75,16 +79,20 @@
             android:text="Due time"
             android:id="@+id/dueTimeLabel"
             android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal" />
+            android:layout_gravity="center_horizontal"/>
 
         <Button
             style="?android:attr/buttonStyleSmall"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Pick Time"
+            android:textColor="@color/pickPeriod"
+            android:drawableLeft="@drawable/ic_pick_time"
+            android:padding="14dp"
             android:id="@+id/dueTime"
             android:layout_gravity="center_horizontal"
-            android:onClick="showTimePicker" />
+            android:onClick="showTimePicker"
+            android:theme="@style/pickPeriod" />
 
         <Button
             style="?android:attr/buttonStyleSmall"
@@ -96,7 +104,10 @@
             android:layout_below="@+id/datePickerCaller"
             android:layout_gravity="center_horizontal"
             android:onClick="addNewTask"
-            android:layout_marginTop="10dp" />
+            android:layout_marginTop="26dp"
+            android:textColor="@color/pickPeriod"
+            android:theme="@style/pickPeriod"
+            android:padding="14dp" />
 
     </LinearLayout>
     </ScrollView>

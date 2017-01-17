@@ -122,7 +122,7 @@ public class AddingTask extends AppCompatActivity {
 
     public void scheduleTask(String title, String description, Date dueDate) {
         int notificationId = (int) (System.currentTimeMillis() % Integer.MAX_VALUE);
-        scheduleNotification(dueDate, "Reminder for : \"title\"", NOTIF_MESSAGE, notificationId, MainActivity.class);
+        scheduleNotification(dueDate, "Reminder for : \"" + title + "\"", NOTIF_MESSAGE, notificationId, MainActivity.class);
 
         Task task = new Task(title, description, dueDate, notificationId, "TO DO");
         TaskSaving.addNewTask(task);

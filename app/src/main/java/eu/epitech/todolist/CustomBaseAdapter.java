@@ -1,6 +1,7 @@
 package eu.epitech.todolist;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,11 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+
+import static eu.epitech.todolist.R.id.dueDate;
+import static eu.epitech.todolist.R.id.status;
 
 /**
  * Created by noboud_n on 11/01/2017.
@@ -42,7 +48,8 @@ public class CustomBaseAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.txtTitle = (TextView) convertView.findViewById(R.id.title);
             holder.txtDescription = (TextView) convertView.findViewById(R.id.description);
-            holder.txtDueDate = (TextView) convertView.findViewById(R.id.dueDate);
+            holder.txtDueDate = (TextView) convertView.findViewById(dueDate);
+            holder.txtStatus = (TextView) convertView.findViewById(status);
 
             convertView.setTag(holder);
         } else {
@@ -54,12 +61,41 @@ public class CustomBaseAdapter extends BaseAdapter {
         try {
             SimpleDateFormat df = new SimpleDateFormat("dd EE MMMM yyyy");
             String date = df.format(searchArrayList.get(position).getDueDate());
-            df = new SimpleDateFormat("hh:mm");
+            df = new SimpleDateFormat("hh:mm aaaa");
             String time = df.format(searchArrayList.get(position).getDueDate());
             holder.txtDueDate.setText("Due date : " + date + " at " + time);
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Date dueDate = searchArrayList.get(position).getDueDate();
+        Date currentDate = new Date();
+        Calendar currentCalendar = Calendar.getInstance();
+        Calendar dueCalendar = Calendar.getInstance();
+
+        currentCalendar.setTime(currentDate);
+        dueCalendar.setTime(dueDate);
+
+        String status;
+
+        if (currentDate.after(dueDate) && !searchArrayList.get(position).getCategory().equals("DONE")) {
+            status = "Task expired";
+            holder.txtStatus.setTextColor(Color.parseColor("#dd1d1d")); // Red
+        } else if (currentCalendar.get(Calendar.DAY_OF_MONTH) == dueCalendar.get(Calendar.DAY_OF_MONTH)
+                    && currentCalendar.get(Calendar.MONTH) == dueCalendar.get(Calendar.MONTH)
+                    && currentCalendar.get(Calendar.YEAR) == dueCalendar.get(Calendar.YEAR)
+                    && !searchArrayList.get(position).getCategory().equals("DONE")) {
+            status = "Task closed to the deadline !";
+            holder.txtStatus.setTextColor(Color.parseColor("#ff9a00")); // Orange
+        } else if (searchArrayList.get(position).getCategory().equals("DONE")) {
+            status = "Task completed";
+            holder.txtStatus.setTextColor(Color.parseColor("#149a0b")); // Green
+        } else {
+            status = "Task in progress";
+            holder.txtStatus.setTextColor(Color.parseColor("#149a0b")); // Green
+        }
+
+        holder.txtStatus.setText(status);
 
         return convertView;
     }
@@ -68,5 +104,6 @@ public class CustomBaseAdapter extends BaseAdapter {
         TextView txtTitle;
         TextView txtDescription;
         TextView txtDueDate;
+        TextView txtStatus;
     }
 }
