@@ -68,7 +68,6 @@ public class FragmentPage extends Fragment {
                         if (vpa != null) {
                             vpa.notifyDataSetChanged();
                         }
-                        // refresh list please !
                         break;
                     case 2: // Remove
                         TaskSaving.removeTask(task);
@@ -80,12 +79,8 @@ public class FragmentPage extends Fragment {
                         break;
                     case 3: // Change category
                         changeCategory(task);
-                        updateSharedPreferences();
-                        // Update View
-                        if (vpa != null) {
-                            vpa.notifyDataSetChanged();
-                        }
-                        // refresh list please !
+//                        updateSharedPreferences();
+                        // View is updated in changeCategory as AlertBuilder is asynchronous
                         break;
                 }
             }
@@ -124,6 +119,7 @@ public class FragmentPage extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 task.setCategory(arrayCategories[which]);
+                updateSharedPreferences();
                 // Update View
                 if (MainActivity.getViewPagerAdapter() != null) {
                     MainActivity.getViewPagerAdapter().notifyDataSetChanged();
