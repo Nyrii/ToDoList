@@ -102,7 +102,7 @@ public class FragmentPage extends Fragment {
         builder.show();
     }
 
-    private void changeCategory(final Task task) {
+    public void changeCategory(final Task task) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         builder.setTitle("Select a category");
 
@@ -124,6 +124,10 @@ public class FragmentPage extends Fragment {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 task.setCategory(arrayCategories[which]);
+                // Update View
+                if (MainActivity.getViewPagerAdapter() != null) {
+                    MainActivity.getViewPagerAdapter().notifyDataSetChanged();
+                }
                 dialog.dismiss();
             }
         });
