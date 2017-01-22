@@ -44,6 +44,10 @@ public class Task implements Comparable<Task> {
         this.category = category;
     }
 
+    public int getNotificationId() {
+        return notificationId;
+    }
+
     public Task(String title, String desc, Date dueDate, int notificationId, String category) {
         this.title = title;
         this.desc = desc;
@@ -55,5 +59,19 @@ public class Task implements Comparable<Task> {
     @Override
     public int compareTo(Task o) {
         return getDueDate().compareTo(o.getDueDate());
+    }
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null)
+            return false;
+        if (!(obj instanceof Task))
+            return false;
+        Task other = (Task) obj;
+        if (notificationId != other.getNotificationId()) {
+            return false;
+        }
+        return true;
     }
 }

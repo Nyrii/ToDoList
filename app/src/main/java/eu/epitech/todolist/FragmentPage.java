@@ -2,6 +2,7 @@ package eu.epitech.todolist;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -35,12 +36,23 @@ public class FragmentPage extends Fragment {
         if (TaskSaving.getTasksByCategory() != null) {
             final ListView lv = (ListView) view;
             lv.setAdapter(new CustomBaseAdapter(this.getContext(), TaskSaving.getTasksByCategory()));
+            lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> a, View v, int position, long id) {
+                    Object object = lv.getItemAtPosition(position);
+                    Task task = (Task) object;
+                    displayTaskOptions(task);
+                    return true;
+                }
+            });
             lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> a, View v, int position, long id) {
                     Object object = lv.getItemAtPosition(position);
                     Task task = (Task) object;
-                    displayTaskOptions(task);
+                    Intent intent = new Intent(getContext(), TaskDetails.class);
+                    intent.putExtra("Task", (new Gson()).toJson(task));
+                    startActivity(intent);
                 }
             });
         }
@@ -49,19 +61,16 @@ public class FragmentPage extends Fragment {
     }
 
     public void displayTaskOptions(final Task task) {
-        CharSequence colors[] = new CharSequence[] {"See details", "Done", "Remove", "Change category"};
+        CharSequence colors[] = new CharSequence[] {"Done", "Remove", "Change category"};
 
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-        builder.setTitle("Choose an option");
+        builder.setTitle("Select an option");
         builder.setItems(colors, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 ViewPagerAdapter vpa = MainActivity.getViewPagerAdapter();
                 switch (which) {
-                    case 0: // See details
-                        // new Page
-                        break;
-                    case 1: // Done
+                    case 0: // Done
                         TaskSaving.changeCategory(task, "DONE");
                         updateSharedPreferences();
                         // Update View
@@ -69,7 +78,7 @@ public class FragmentPage extends Fragment {
                             vpa.notifyDataSetChanged();
                         }
                         break;
-                    case 2: // Remove
+                    case 1: // Remove
                         TaskSaving.removeTask(task);
                         updateSharedPreferences();
                         // Update View
@@ -77,7 +86,7 @@ public class FragmentPage extends Fragment {
                             vpa.notifyDataSetChanged();
                         }
                         break;
-                    case 3: // Change category
+                    case 2: // Change category
                         changeCategory(task);
 //                        updateSharedPreferences();
                         // View is updated in changeCategory as AlertBuilder is asynchronous

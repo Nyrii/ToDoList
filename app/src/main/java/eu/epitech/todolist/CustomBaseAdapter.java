@@ -68,16 +68,15 @@ public class CustomBaseAdapter extends BaseAdapter {
             e.printStackTrace();
         }
 
+        // get DueDate and CurrentDate to compare them
         Date dueDate = searchArrayList.get(position).getDueDate();
         Date currentDate = new Date();
         Calendar currentCalendar = Calendar.getInstance();
         Calendar dueCalendar = Calendar.getInstance();
-
         currentCalendar.setTime(currentDate);
         dueCalendar.setTime(dueDate);
-
+        // Set the status depending of the current and the due date
         String status;
-
         if (currentDate.after(dueDate) && !searchArrayList.get(position).getCategory().equals("DONE")) {
             status = "Task expired";
             holder.txtStatus.setTextColor(Color.parseColor("#dd1d1d")); // Red
@@ -94,7 +93,6 @@ public class CustomBaseAdapter extends BaseAdapter {
             status = "Task in progress";
             holder.txtStatus.setTextColor(Color.parseColor("#149a0b")); // Green
         }
-
         holder.txtStatus.setText(status);
 
         return convertView;
